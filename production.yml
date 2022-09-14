@@ -1,0 +1,41 @@
+version: "3.7"
+services:
+  homepage:
+    image: ghcr.io/benphelps/homepage:latest
+    volumes:
+      - config:/app/config
+    deploy:
+      mode: global
+      resources:
+       limits:
+        cpus: '0.30'
+        memory: 128M
+       reservations:
+        cpus: '0.30'
+        memory: 128M
+    # service restart policy
+      restart_policy:
+       condition: on-failure
+       delay: 5s
+       max_attempts: 3
+       window: 120s
+    # service rollback configuration
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+    # service update configuration
+      update_config:
+       parallelism: 1
+       order: start-first
+       delay: 10s
+       failure_action: rollback
+       monitor: 60s
+       max_failure_ratio: 0.3 
+    networks:
+      - web
+volumes:
+ config:
+networks:
+  web:
+    external: true
+    name: web
