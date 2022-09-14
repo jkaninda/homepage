@@ -7,6 +7,8 @@ pipeline {
         IMAGE_TAG= "latest"
         SERVICE_NAME = "homepage"
     }              
+     stages{
+
         stage('Deploy to swarm'){
             steps{
               script{
@@ -19,10 +21,7 @@ pipeline {
             }
         }
         
-    }
-     /* Cleanup workspace */
-         post {
-           always {
-               deleteDir()
-           }
-       }
+        
+
+     }
+}
